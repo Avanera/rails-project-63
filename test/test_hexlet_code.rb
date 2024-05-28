@@ -7,7 +7,13 @@ class TestHexletCode < Minitest::Test
     refute_nil ::HexletCode::VERSION
   end
 
-  def test_it_does_something_useful
-    assert false
+  def test_it_generates_tags
+    tag = "img"
+    args = { src: "path/to/image" }
+
+    assert_equal(
+      '<img src="path/to/image">',
+      HexletCode.generate_tag(tag, args)
+    )
   end
 end
