@@ -5,4 +5,4 @@ lint:
 test:
 		bundle exec rake test
 
-.PHONY: test
+.PHONY: install lint test
