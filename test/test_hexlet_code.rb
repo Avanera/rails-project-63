@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require "test_helper"
+require "yaml"
 
 class TestHexletCode < Minitest::Test
   def test_that_it_has_a_version_number
@@ -29,12 +30,7 @@ class TestHexletCode < Minitest::Test
       f.input :job, as: :text, rows: 50, cols: 50
     end
 
-    expected_form =
-      "<form action=\"/users\" method=\"post\">\
-<input name=\"name\" type=\"text\" value=\"rob\" class=\"user-input\">\
-<textarea name=\"gender\" cols=\"20\" rows=\"40\">m</textarea>\
-<textarea name=\"job\" cols=\"50\" rows=\"50\">hexlet</textarea>\
-</form>"
+    expected_form = YAML.load_file("test/fixtures/form.yml")["user"]["html_form"]
 
     assert_equal(expected_form, result)
   end
