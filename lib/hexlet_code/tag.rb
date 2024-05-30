@@ -16,7 +16,9 @@ module HexletCode
   # Returns:
   #   String: The generated HTML tag string.
   #
-  class Tag
+  module Tag
+    autoload :Form, "hexlet_code/tag/form"
+
     def self.build(tag, args = {})
       return "<#{tag}>" if args.empty?
 
