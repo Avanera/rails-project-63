@@ -4,3 +4,11 @@ user:
 <textarea name=\"gender\" cols=\"20\" rows=\"40\">m</textarea>\
 <textarea name=\"job\" cols=\"50\" rows=\"50\">hexlet</textarea>\
 </form>"
+  html_form_with_labels: "<form action=\"/users\" method=\"post\">\
+<label for=\"name\">Name</label>\
+<input name=\"name\" type=\"text\" value=\"rob\" class=\"user-input\">\
+<label for=\"gender\">Gender Identity</label>\
+<textarea name=\"gender\" cols=\"20\" rows=\"40\">m</textarea>\
+<label for=\"job\">Job</label>\
+<textarea name=\"job\" cols=\"50\" rows=\"50\">hexlet</textarea>\
+</form>"

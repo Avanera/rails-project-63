@@ -10,14 +10,15 @@ require_relative "hexlet_code/version"
 #
 # Additionally, the form_for method allows for easy generation of forms based on object data:
 #   User = Struct.new(:name, :job, :gender, keyword_init: true)
-#     f.input :name, class: 'user-input'
 #   user = User.new(name: "rob", job: "hexlet", gender: "m")
 #   form_html = HexletCode.form_for(user, url: "#") do |f|
+#     f.input :name, class: "user-input", label: "Name"
 #     f.input :job
 #   end
 #   puts form_html
 #   # Output:
 #   # <form action="#" method="post">
+#   #   <label for="name">Name</label>
 #   #   <input name="name" type="text" value="rob" class="user-input">
 #   #   <input name="job" type="text" value="hexlet">
 #   # </form>

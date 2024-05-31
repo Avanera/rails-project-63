@@ -17,17 +17,18 @@ user = User.new name: "rob", job: "hexlet", gender: "m"
 ```
 Generating Form Fields Based on Object Data.
 
-You can specify additional attributes for the fields using a hash as the last parameter.
+You can specify additional attributes for the fields or a label using a hash as the last parameter.
 ```
-  f.input :job
 form_html = HexletCode.form_for user, url: "#" do |f|
   f.input :name, class: "user-input"
+  f.input :job, label: "Job"
 end
 
 puts form_html
 # Output:
 # <form action="#" method="post">
 #   <input name="name" type="text" value="rob" class="user-input">
+#   <label for="job">Job</label>
 #   <input name="job" type="text" value="hexlet">
 # </form>
 ```

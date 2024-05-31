@@ -8,13 +8,14 @@ module HexletCode
     # tags with various attributes.
     #
     # Example usage:
-    #     form.input :job, as: :text, cols: 50, rows: 50
     #   user = User.new(name: "rob", job: "hexlet")
     #   form_html = HexletCode::Tag::Form.build(user, url: "#") do |form|
+    #     form.input :job, as: :text, cols: 50, rows: 50, label: "Job"
     #   end
     #   puts form_html
     #   # Output:
     #   # <form action="#" method="post">
+    #   # <label for="job">Job</label>
     #   # <textarea cols="50" rows="50" name="job">hexlet</textarea>
     #   # </form>
     #
@@ -58,21 +59,24 @@ module HexletCode
         args[:cols] ||= "20"
         args[:rows] ||= "40"
 
-        attrs_str, current_value = prepare_data_for_any_tag(name, args)
+        attrs_str, label_str, current_value = prepare_data_for_any_tag(name, args)
 
-        "<textarea name=\"#{name}\"#{attrs_str}>#{current_value}</textarea>"
+        label_str + "<textarea name=\"#{name}\"#{attrs_str}>#{current_value}</textarea>"
       end
 
       def create_input_tag(name, args)
-        attrs_str, current_value = prepare_data_for_any_tag(name, args)
+        attrs_str, label_str, current_value = prepare_data_for_any_tag(name, args)
 
-        "<input name=\"#{name}\" type=\"text\" value=\"#{current_value}\"#{attrs_str}>"
+        label_str + "<input name=\"#{name}\" type=\"text\" value=\"#{current_value}\"#{attrs_str}>"
       end
 
       def prepare_data_for_any_tag(name, args)
+        label = args.delete(:label)
+        label_str = label ? "<label for=\"#{name}\">#{label}</label>" : ""
         attrs_str = args.map { |k, v| " #{k}=\"#{v}\"" }.join("")
         current_value = object.public_send(name)
-        [attrs_str, current_value]
+
+        [attrs_str, label_str, current_value]
       end
 
       def raise_no_method
