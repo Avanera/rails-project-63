@@ -41,33 +41,43 @@ module HexletCode
         form = Form.new(obj)
         url = args[:url] || "#"
         block.call(form)
+
         "<form action=\"#{url}\" method=\"post\">#{form.fields_str}</form>"
       end
 
       def input(name, args = {})
-        str =
-          if args[:as] == :text
-            make_textarea_tag(name, args)
-          else
-            make_input_tag(name, args)
-          end
+        type = args.delete(:as) || "input"
+        method_name = "create_#{type}_tag"
+        raise_no_method unless respond_to?(method_name)
+        str = send(method_name, name, args)
 
         @fields_str += str
       end
 
-      def make_textarea_tag(name, args)
-        cols = args[:cols] || "20"
-        rows = args[:rows] || "40"
-        body = object.public_send(name)
+      def create_text_tag(name, args)
+        args[:cols] ||= "20"
+        args[:rows] ||= "40"
 
-        "<textarea name=\"#{name}\" cols=\"#{cols}\" rows=\"#{rows}\">#{body}</textarea>"
+        attrs_str, current_value = prepare_data_for_any_tag(name, args)
+
+        "<textarea name=\"#{name}\"#{attrs_str}>#{current_value}</textarea>"
       end
 
-      def make_input_tag(name, args)
-        attrs_str = args.map { |k, v| " #{k}=\"#{v}\"" }.join("")
-        value = object.public_send(name)
+      def create_input_tag(name, args)
+        attrs_str, current_value = prepare_data_for_any_tag(name, args)
 
-        "<input name=\"#{name}\" type=\"text\" value=\"#{value}\"#{attrs_str}>"
+        "<input name=\"#{name}\" type=\"text\" value=\"#{current_value}\"#{attrs_str}>"
+      end
+
+      def prepare_data_for_any_tag(name, args)
+        attrs_str = args.map { |k, v| " #{k}=\"#{v}\"" }.join("")
+        current_value = object.public_send(name)
+        [attrs_str, current_value]
+      end
+
+      def raise_no_method
+        error_message = "The tag with this `:as` option can not be created."
+        raise NoMethodError, error_message
       end
     end
   end

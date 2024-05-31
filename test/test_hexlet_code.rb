@@ -27,11 +27,21 @@ class TestHexletCode < Minitest::Test
     result = HexletCode.form_for user, args do |f|
       f.input :name, class: "user-input"
       f.input :gender, as: :text
-      f.input :job, as: :text, rows: 50, cols: 50
+      f.input :job, as: :text, cols: 50, rows: 50
     end
 
     expected_form = YAML.load_file("test/fixtures/form.yml")["user"]["html_form"]
 
     assert_equal(expected_form, result)
+  end
+
+  def test_it_raises_no_method_error
+    error = assert_raises(NoMethodError) do
+      HexletCode.form_for User.new do |f|
+        f.input :job, as: :no_such_tag
+      end
+    end
+
+    assert_equal "The tag with this `:as` option can not be created.", error.message
   end
 end
