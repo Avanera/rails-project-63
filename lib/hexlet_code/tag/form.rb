@@ -8,9 +8,9 @@ module HexletCode
     # tags with various attributes.
     #
     # Example usage:
-    #   user = User.new(name: 'rob', job: 'hexlet')
-    #   form_html = HexletCode::Tag::Form.build(user, url: '#') do |form|
     #     form.input :job, as: :text, cols: 50, rows: 50
+    #   user = User.new(name: "rob", job: "hexlet")
+    #   form_html = HexletCode::Tag::Form.build(user, url: "#") do |form|
     #   end
     #   puts form_html
     #   # Output:

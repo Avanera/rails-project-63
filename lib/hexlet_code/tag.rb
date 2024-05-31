@@ -6,8 +6,8 @@ module HexletCode
   # based on the given tag name and optional attributes.
   #
   # Example usage:
-  #   HexletCode::Tag.build('br')  # => "<br>"
-  #   HexletCode::Tag.build('img', src: 'path/to/image')  # => "<img src=\"path/to/image\">"
+  #   HexletCode::Tag.build("br")  # => "<br>"
+  #   HexletCode::Tag.build("img", src: "path/to/image")  # => "<img src=\"path/to/image\">"
   #
   # Arguments:
   #   tag (String): The name of the HTML tag to be generated.

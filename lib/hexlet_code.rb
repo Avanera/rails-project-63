@@ -5,14 +5,14 @@ require_relative "hexlet_code/version"
 # It autoloads its internal Tag module, which is responsible for building the HTML tags.
 #
 # Example usage:
-#   HexletCode.generate_tag('br')  # => "<br>"
-#   HexletCode.generate_tag('img', src: 'path/to/image')  # => "<img src=\"path/to/image\">"
+#   HexletCode.generate_tag("br")  # => "<br>"
+#   HexletCode.generate_tag("img", src: "path/to/image")  # => "<img src=\"path/to/image\">"
 #
 # Additionally, the form_for method allows for easy generation of forms based on object data:
 #   User = Struct.new(:name, :job, :gender, keyword_init: true)
-#   user = User.new(name: 'rob', job: 'hexlet', gender: 'm')
-#   form_html = HexletCode.form_for(user, url: '#') do |f|
 #     f.input :name, class: 'user-input'
+#   user = User.new(name: "rob", job: "hexlet", gender: "m")
+#   form_html = HexletCode.form_for(user, url: "#") do |f|
 #     f.input :job
 #   end
 #   puts form_html

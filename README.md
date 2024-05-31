@@ -10,18 +10,18 @@ similar to Simple Form in the Rails world but with a simpler architecture.
 Here's how to use the HexletCode gem to generate HTML forms based on the data of an object:
 
 ```
-require 'hexletcode'
+require "hexletcode"
 
 User = Struct.new(:name, :job, :gender, keyword_init: true)
-user = User.new name: 'rob', job: 'hexlet', gender: 'm'
+user = User.new name: "rob", job: "hexlet", gender: "m"
 ```
 Generating Form Fields Based on Object Data.
 
 You can specify additional attributes for the fields using a hash as the last parameter.
 ```
-form_html = HexletCode.form_for user, url: '#' do |f|
-  f.input :name, class: 'user-input'
   f.input :job
+form_html = HexletCode.form_for user, url: "#" do |f|
+  f.input :name, class: "user-input"
 end
 
 puts form_html
@@ -47,7 +47,7 @@ puts form_html
 ```
 You can also specify custom values for default attributes.
 ```
-form_html = HexletCode.form_for user, url: '#' do |f|
+form_html = HexletCode.form_for user, url: "#" do |f|
   f.input :job, as: :text, rows: 50, cols: 50
 end
 
