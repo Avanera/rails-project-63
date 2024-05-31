@@ -38,23 +38,27 @@ Fields can have default values that can be overridden.
 ```
 form_html = HexletCode.form_for user do |f|
   f.input :job, as: :text
+  f.submit
 end
 
 puts form_html
 # Output:
 # <form action="#" method="post">
 #   <textarea name="job" cols="20" rows="40">hexlet</textarea>
+#   <input type="submit" value="Save">
 # </form>
 ```
 You can also specify custom values for default attributes.
 ```
 form_html = HexletCode.form_for user, url: "#" do |f|
   f.input :job, as: :text, rows: 50, cols: 50
+  f.submit "Wow"
 end
 
 puts form_html
 # Output:
 # <form action="#" method="post">
 #   <textarea cols="50" rows="50" name="job">hexlet</textarea>
+#   <input type="submit" value="Wow">
 # </form>
 ```

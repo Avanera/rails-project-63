@@ -11,12 +11,14 @@ module HexletCode
     #   user = User.new(name: "rob", job: "hexlet")
     #   form_html = HexletCode::Tag::Form.build(user, url: "#") do |form|
     #     form.input :job, as: :text, cols: 50, rows: 50, label: "Job"
+    #     form.submit 'Wow'
     #   end
     #   puts form_html
     #   # Output:
     #   # <form action="#" method="post">
     #   # <label for="job">Job</label>
     #   # <textarea cols="50" rows="50" name="job">hexlet</textarea>
+    #   # <input type="submit" value="Wow">
     #   # </form>
     #
     # The `build` class method initializes a new Form object, sets the form's action URL,
@@ -27,15 +29,15 @@ module HexletCode
     #
     # Attributes:
     # - object: The object containing the data for the form fields.
-    # - fields_str: A string that accumulates the generated HTML for the form fields.
+    # - form_body: A string that accumulates the generated HTML for the form elements.
     #
     class Form
       attr_reader :object
-      attr_accessor :fields_str
+      attr_accessor :form_body
 
       def initialize(obj)
         @object = obj
-        @fields_str = ""
+        @form_body = ""
       end
 
       def self.build(obj, args, &block)
@@ -43,7 +45,7 @@ module HexletCode
         url = args[:url] || "#"
         block.call(form)
 
-        "<form action=\"#{url}\" method=\"post\">#{form.fields_str}</form>"
+        "<form action=\"#{url}\" method=\"post\">#{form.form_body}</form>"
       end
 
       def input(name, args = {})
@@ -52,7 +54,13 @@ module HexletCode
         raise_no_method unless respond_to?(method_name)
         str = send(method_name, name, args)
 
-        @fields_str += str
+        @form_body += str
+      end
+
+      def submit(value = "Save")
+        str ="<input type=\"submit\" value=\"#{value}\">"
+
+        @form_body += str
       end
 
       def create_text_tag(name, args)

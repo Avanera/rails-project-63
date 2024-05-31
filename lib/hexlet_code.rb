@@ -14,6 +14,7 @@ require_relative "hexlet_code/version"
 #   form_html = HexletCode.form_for(user, url: "#") do |f|
 #     f.input :name, class: "user-input", label: "Name"
 #     f.input :job
+#     f.submit "Wow"
 #   end
 #   puts form_html
 #   # Output:
@@ -21,6 +22,7 @@ require_relative "hexlet_code/version"
 #   #   <label for="name">Name</label>
 #   #   <input name="name" type="text" value="rob" class="user-input">
 #   #   <input name="job" type="text" value="hexlet">
+#   #   <input type="submit" value="Wow">
 #   # </form>
 #
 module HexletCode
