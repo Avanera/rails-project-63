@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require_relative "hexlet_code/version"
+require_relative 'hexlet_code/version'
 # The HexletCode module provides a simple interface for generating HTML tags.
 # It autoloads its internal Tag module, which is responsible for building the HTML tags.
 #
@@ -26,16 +26,16 @@ require_relative "hexlet_code/version"
 #   # </form>
 #
 module HexletCode
-  autoload :Tag, "hexlet_code/tag"
+  autoload :Tag, 'hexlet_code/tag'
 
   class Error < StandardError; end
 
-  def self.generate_tag(tag_name, *args)
-    Tag.build(tag_name, *args)
+  def self.generate_tag(tag_name, *)
+    Tag.build(tag_name, *)
   end
 
-  def self.form_for(obj, args = {}, &block)
-    form = Tag::Form.new(obj, args).call(&block)
+  def self.form_for(obj, args = {}, &)
+    form = Tag::Form.new(obj, args).call(&)
     Tag::HtmlRenderer.build(form)
   end
 end

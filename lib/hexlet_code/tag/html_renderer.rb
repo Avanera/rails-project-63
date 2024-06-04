@@ -23,7 +23,7 @@ module HexletCode
     class HtmlRenderer
       class << self
         def build(form)
-          form_args_str = ""
+          form_args_str = ''
           form.form_args.each { |k, v| form_args_str += " #{k}=\"#{v}\"" }
           fields = create_fields(form)
 
@@ -60,7 +60,7 @@ module HexletCode
         def prepare_data_for_a_tag(params)
           params[:label] ||= params[:name].capitalize
           label_str = "<label for=\"#{params[:name]}\">#{params[:label]}</label>"
-          attrs_str = params[:args].map { |k, v| " #{k}=\"#{v}\"" }.join("")
+          attrs_str = params[:args].map { |k, v| " #{k}=\"#{v}\"" }.join
 
           { label_str:, attrs_str: }
         end

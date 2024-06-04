@@ -38,7 +38,7 @@ module HexletCode
       end
 
       def input(name, args = {})
-        type = args.delete(:as) || "input"
+        type = args.delete(:as) || 'input'
         method_name = "#{type}_tag_params"
         raise_no_method unless respond_to?(method_name)
         tag_params = send(method_name, type, name, args)
@@ -46,8 +46,8 @@ module HexletCode
         @fields << tag_params
       end
 
-      def submit(value = "Save")
-        @fields << { type: "submit", value: }
+      def submit(value = 'Save')
+        @fields << { type: 'submit', value: }
       end
 
       def input_tag_params(type, name, args)
@@ -55,8 +55,8 @@ module HexletCode
       end
 
       def text_tag_params(type, name, args)
-        args[:cols] ||= "20"
-        args[:rows] ||= "40"
+        args[:cols] ||= '20'
+        args[:rows] ||= '40'
 
         prepare_tag_args(type, name, args)
       end
@@ -65,7 +65,7 @@ module HexletCode
 
       def prepare_form_args(form_args)
         form_args[:action] = form_args.delete(:url)
-        form_args[:method] ||= "post"
+        form_args[:method] ||= 'post'
         form_args.sort.to_h
       end
 
@@ -78,7 +78,7 @@ module HexletCode
       end
 
       def raise_no_method
-        error_message = "The tag with this `:as` option can not be created."
+        error_message = 'The tag with this `:as` option can not be created.'
         raise NoMethodError, error_message
       end
     end

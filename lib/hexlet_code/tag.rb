@@ -17,13 +17,13 @@ module HexletCode
   #   String: The generated HTML tag string.
   #
   module Tag
-    autoload :Form, "hexlet_code/tag/form"
-    autoload :HtmlRenderer, "hexlet_code/tag/html_renderer"
+    autoload :Form, 'hexlet_code/tag/form'
+    autoload :HtmlRenderer, 'hexlet_code/tag/html_renderer'
 
     def self.build(tag, args = {})
       return "<#{tag}>" if args.empty?
 
-      arg_str = args.map { |k, v| "#{k}=\"#{v}\"" }.join(" ")
+      arg_str = args.map { |k, v| "#{k}=\"#{v}\"" }.join(' ')
       "<#{tag} #{arg_str}>"
     end
   end
