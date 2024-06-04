@@ -2,89 +2,77 @@
 
 module HexletCode
   module Tag
-    #
-    # The HexletCode::Tag::Form class is responsible for building HTML form tags.
-    # It provides a DSL to easily generate form elements such as <input> and <textarea>
-    # tags with various attributes.
-    #
-    # Example usage:
-    #   user = User.new(name: "rob", job: "hexlet")
-    #   form_html = HexletCode::Tag::Form.build(user, url: "#") do |form|
-    #     form.input :job, as: :text, cols: 50, rows: 50, label: "Job"
-    #     form.submit 'Wow'
-    #   end
-    #   puts form_html
-    #   # Output:
-    #   # <form action="#" method="post">
-    #   # <label for="job">Job</label>
-    #   # <textarea cols="50" rows="50" name="job">hexlet</textarea>
-    #   # <input type="submit" value="Wow">
-    #   # </form>
-    #
-    # The `build` class method initializes a new Form object, sets the form's action URL,
-    # and yields to a block where input fields can be added.
-    # The `input` method dynamically adds either a <textarea> or <input> field to the form.
-    # The `make_textarea_tag` and `make_input_tag` methods generate the appropriate HTML
-    # tags based on the provided attributes.
-    #
-    # Attributes:
-    # - object: The object containing the data for the form fields.
-    # - form_body: A string that accumulates the generated HTML for the form elements.
+    # This class, HexletCode::Tag::Form, is designed for creating a form object in Ruby. The primary
+    # method call accepts a block that invokes either the input or submit methods to generate the
+    # respective fields. Here’s how you might use it:
+    # form = HexletCode::Tag::Form.new(user, url: "/users", method: "post")
+    # form.call do |f|
+    #   f.input :name, class: "user-input", label: "Name"
+    #   f.input :job
+    #   f.submit "Save it"
+    # end
+    # Example output:
+    # <HexletCode::Tag::Form:0x0000000111ec6370
+    #   @fields=[
+    #     {:type=>"input", :name=>:name, :args=>{:class=>"user-input"}, :value=>"rob", :label=>"Name"},
+    #     {:type=>:text, :name=>:job, :args=>{:cols=>20, :rows=>40}, :value=>"hexlet", :label=>"Job"},
+    #     {:type=>"submit", :value=>"Save it"}
+    #   ],
+    #   @form_args={:action=>"/users", :method=>"post"},
+    #   @object=#<struct TestHexletCode::User name="rob", job="hexlet", gender="m">
+    # >
     #
     class Form
-      attr_reader :object
-      attr_accessor :form_body
+      attr_reader :object, :form_args
+      attr_accessor :fields
 
-      def initialize(obj)
+      def initialize(obj, form_args)
         @object = obj
-        @form_body = ""
+        @fields = []
+        @form_args = prepare_form_args(form_args)
       end
 
-      def self.build(obj, args, &block)
-        form = Form.new(obj)
-        url = args[:url] || "#"
-        block.call(form)
-
-        "<form action=\"#{url}\" method=\"post\">#{form.form_body}</form>"
+      def call(&block)
+        block.call(self)
+        self
       end
 
       def input(name, args = {})
         type = args.delete(:as) || "input"
-        method_name = "create_#{type}_tag"
+        method_name = "#{type}_tag_params"
         raise_no_method unless respond_to?(method_name)
-        str = send(method_name, name, args)
+        tag_params = send(method_name, type, name, args)
 
-        @form_body += str
+        @fields << tag_params
       end
 
       def submit(value = "Save")
-        str ="<input type=\"submit\" value=\"#{value}\">"
-
-        @form_body += str
+        @fields << { type: "submit", value: }
       end
 
-      def create_text_tag(name, args)
+      def input_tag_params(type, name, args)
+        prepare_tag_args(type, name, args)
+      end
+
+      def text_tag_params(type, name, args)
         args[:cols] ||= "20"
         args[:rows] ||= "40"
 
-        attrs_str, label_str, current_value = prepare_data_for_any_tag(name, args)
-
-        label_str + "<textarea name=\"#{name}\"#{attrs_str}>#{current_value}</textarea>"
+        prepare_tag_args(type, name, args)
       end
 
-      def create_input_tag(name, args)
-        attrs_str, label_str, current_value = prepare_data_for_any_tag(name, args)
+      private
 
-        label_str + "<input name=\"#{name}\" type=\"text\" value=\"#{current_value}\"#{attrs_str}>"
+      def prepare_form_args(form_args)
+        { action: form_args[:url], method: form_args[:method] || "post" }
       end
 
-      def prepare_data_for_any_tag(name, args)
-        label = args.delete(:label)
-        label_str = label ? "<label for=\"#{name}\">#{label}</label>" : ""
-        attrs_str = args.map { |k, v| " #{k}=\"#{v}\"" }.join("")
-        current_value = object.public_send(name)
+      def prepare_tag_args(type, name, args)
+        { type:, name:, args:, value: current_value(name), label: args.delete(:label) }
+      end
 
-        [attrs_str, label_str, current_value]
+      def current_value(name)
+        object.public_send(name)
       end
 
       def raise_no_method

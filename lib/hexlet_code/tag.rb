@@ -18,6 +18,7 @@ module HexletCode
   #
   module Tag
     autoload :Form, "hexlet_code/tag/form"
+    autoload :HtmlRenderer, "hexlet_code/tag/html_renderer"
 
     def self.build(tag, args = {})
       return "<#{tag}>" if args.empty?

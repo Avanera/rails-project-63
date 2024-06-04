@@ -26,7 +26,7 @@ require_relative "hexlet_code/version"
 #   # </form>
 #
 module HexletCode
-  autoload(:Tag, "hexlet_code/tag")
+  autoload :Tag, "hexlet_code/tag"
 
   class Error < StandardError; end
 
@@ -35,6 +35,7 @@ module HexletCode
   end
 
   def self.form_for(obj, args = {}, &block)
-    Tag::Form.build(obj, args, &block)
+    form = Tag::Form.new(obj, args).call(&block)
+    Tag::HtmlRenderer.build(form)
   end
 end
