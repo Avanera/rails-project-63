@@ -20,30 +20,14 @@ class TestHexletCode < Minitest::Test
 
   User = Struct.new(:name, :job, :gender, keyword_init: true)
 
-  def test_it_generates_forms_without_labels
+  def test_it_generates_forms_with_labels
     user = User.new name: "rob", job: "hexlet", gender: "m"
-    args = { url: "/users" }
+    args = { url: "/users", method: :get, class: 'hexlet-form' }
 
     result = HexletCode.form_for user, args do |f|
       f.input :name, class: "user-input"
-      f.input :gender, as: :text
-      f.input :job, as: :text, cols: 50, rows: 50
-      f.submit
-    end
-
-    expected_form = YAML.load_file("test/fixtures/form.yml")["user"]["html_form"]
-
-    assert_equal(expected_form, result)
-  end
-
-  def test_it_generates_forms_with_labels
-    user = User.new name: "rob", job: "hexlet", gender: "m"
-    args = { url: "/users" }
-
-    result = HexletCode.form_for user, args do |f|
-      f.input :name, class: "user-input", label: "Name"
       f.input :gender, as: :text, label: "Gender Identity"
-      f.input :job, as: :text, cols: 50, rows: 50, label: "Job"
+      f.input :job, as: :text, cols: 50, rows: 50
       f.submit "Wow"
     end
 

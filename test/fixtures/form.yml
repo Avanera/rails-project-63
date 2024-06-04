@@ -1,11 +1,5 @@
 user:
-  html_form: "<form action=\"/users\" method=\"post\">\
-<input name=\"name\" type=\"text\" value=\"rob\" class=\"user-input\">\
-<textarea name=\"gender\" cols=\"20\" rows=\"40\">m</textarea>\
-<textarea name=\"job\" cols=\"50\" rows=\"50\">hexlet</textarea>\
-<input type=\"submit\" value=\"Save\">\
-</form>"
-  html_form_with_labels: "<form action=\"/users\" method=\"post\">\
+  html_form_with_labels: "<form action=\"/users\" class=\"hexlet-form\" method=\"get\">\
 <label for=\"name\">Name</label>\
 <input name=\"name\" type=\"text\" value=\"rob\" class=\"user-input\">\
 <label for=\"gender\">Gender Identity</label>\
