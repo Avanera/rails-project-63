@@ -43,6 +43,6 @@ class TestHexletCode < Minitest::Test
       end
     end
 
-    assert_equal 'The tag with this `:as` option can not be created.', error.message
+    assert_equal "The tag with `:as` option 'no_such_tag' can not be created.", error.message
   end
 end

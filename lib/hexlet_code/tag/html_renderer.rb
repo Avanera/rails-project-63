@@ -23,32 +23,31 @@ module HexletCode
     class HtmlRenderer
       class << self
         def build(form)
-          form_args_str = ''
-          form.form_args.each { |k, v| form_args_str += " #{k}=\"#{v}\"" }
-          fields = create_fields(form)
+          form_args_str = build_form_args_str(form.form_args)
+          fields = build_fields_str(form)
 
           "<form#{form_args_str}>#{fields}</form>"
         end
 
-        def create_fields(form)
+        def build_fields_str(form)
           form.fields.each_with_object(String.new) do |params, fields_str|
-            field = send("#{params[:type]}_tag_string", params)
+            field = send("generate_#{params[:type]}_tag_string", params)
             fields_str << field
           end
         end
 
-        def submit_tag_string(params)
+        def generate_submit_tag_string(params)
           "<input type=\"submit\" value=\"#{params[:value]}\">"
         end
 
-        def text_tag_string(params)
+        def generate_text_tag_string(params)
           data = prepare_data_for_a_tag(params)
           tag = "<textarea name=\"#{params[:name]}\"#{data[:attrs_str]}>#{params[:value]}</textarea>"
 
           data[:label_str] + tag
         end
 
-        def input_tag_string(params)
+        def generate_input_tag_string(params)
           data = prepare_data_for_a_tag(params)
           tag = "<input name=\"#{params[:name]}\" type=\"text\" value=\"#{params[:value]}\"#{data[:attrs_str]}>"
 
@@ -56,6 +55,10 @@ module HexletCode
         end
 
         private
+
+        def build_form_args_str(form_args)
+          form_args.each_with_object(String.new) { |(k, v), str| str << " #{k}=\"#{v}\"" }
+        end
 
         def prepare_data_for_a_tag(params)
           params[:label] ||= params[:name].capitalize

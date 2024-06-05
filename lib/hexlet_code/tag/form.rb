@@ -26,21 +26,17 @@ module HexletCode
       attr_reader :object, :form_args
       attr_accessor :fields
 
-      def initialize(obj, form_args)
+      def initialize(obj, form_args, &)
         @object = obj
-        @fields = []
         @form_args = prepare_form_args(form_args)
-      end
-
-      def call(&block)
-        block.call(self)
-        self
+        @fields = []
+        create_fields_in_the_form(&)
       end
 
       def input(name, args = {})
         type = args.delete(:as) || 'input'
-        method_name = "#{type}_tag_params"
-        raise_no_method unless respond_to?(method_name)
+        method_name = "build_#{type}_tag_params"
+        raise_no_method(type) unless respond_to?(method_name)
         tag_params = send(method_name, type, name, args)
 
         @fields << tag_params
@@ -50,11 +46,11 @@ module HexletCode
         @fields << { type: 'submit', value: }
       end
 
-      def input_tag_params(type, name, args)
+      def build_input_tag_params(type, name, args)
         prepare_tag_args(type, name, args)
       end
 
-      def text_tag_params(type, name, args)
+      def build_text_tag_params(type, name, args)
         args[:cols] ||= '20'
         args[:rows] ||= '40'
 
@@ -63,6 +59,10 @@ module HexletCode
 
       private
 
+      def create_fields_in_the_form(&block)
+        block.call(self)
+      end
+
       def prepare_form_args(form_args)
         form_args[:action] = form_args.delete(:url)
         form_args[:method] ||= 'post'
@@ -70,15 +70,15 @@ module HexletCode
       end
 
       def prepare_tag_args(type, name, args)
-        { type:, name:, args:, value: current_value(name), label: args.delete(:label) }
+        { type:, name:, args:, value: get_current_value(name), label: args.delete(:label) }
       end
 
-      def current_value(name)
+      def get_current_value(name)
         object.public_send(name)
       end
 
-      def raise_no_method
-        error_message = 'The tag with this `:as` option can not be created.'
+      def raise_no_method(type)
+        error_message = "The tag with `:as` option '#{type}' can not be created."
         raise NoMethodError, error_message
       end
     end

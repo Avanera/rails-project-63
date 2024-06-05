@@ -35,7 +35,7 @@ module HexletCode
   end
 
   def self.form_for(obj, args = {}, &)
-    form = Tag::Form.new(obj, args).call(&)
+    form = Tag::Form.new(obj, args, &)
     Tag::HtmlRenderer.build(form)
   end
 end
