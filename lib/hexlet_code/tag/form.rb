@@ -1,5 +1,9 @@
 # frozen_string_literal: true
 
+require 'active_support/inflector'
+require_relative 'inputs/input'
+require_relative 'inputs/text'
+
 module HexletCode
   module Tag
     # This class, HexletCode::Tag::Form, is designed for creating a form object in Ruby. The primary
@@ -23,6 +27,8 @@ module HexletCode
     # >
     #
     class Form
+      extend ActiveSupport::Inflector
+
       attr_reader :object, :form_args
       attr_accessor :fields
 
@@ -35,26 +41,19 @@ module HexletCode
 
       def input(name, args = {})
         type = args.delete(:as) || 'input'
-        method_name = "build_#{type}_tag_params"
-        raise_no_method(type) unless respond_to?(method_name)
-        tag_params = send(method_name, type, name, args)
+        begin
+          klass = "HexletCode::Tag::Inputs::#{type.capitalize}".constantize
+        rescue NameError
+          raise_no_method(type)
+        end
+        value = get_current_value(name)
+        tag_params = klass.new.build_tag_params(type, name, args, value)
 
         @fields << tag_params
       end
 
       def submit(value = 'Save')
         @fields << { type: 'submit', value: }
-      end
-
-      def build_input_tag_params(type, name, args)
-        prepare_tag_args(type, name, args)
-      end
-
-      def build_text_tag_params(type, name, args)
-        args[:cols] ||= '20'
-        args[:rows] ||= '40'
-
-        prepare_tag_args(type, name, args)
       end
 
       private
@@ -67,10 +66,6 @@ module HexletCode
         form_args[:action] = form_args.delete(:url)
         form_args[:method] ||= 'post'
         form_args.sort.to_h
-      end
-
-      def prepare_tag_args(type, name, args)
-        { type:, name:, args:, value: get_current_value(name), label: args.delete(:label) }
       end
 
       def get_current_value(name)
