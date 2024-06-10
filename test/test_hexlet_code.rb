@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 require 'test_helper'
-require 'yaml'
 
 class TestHexletCode < Minitest::Test
   def test_that_it_has_a_version_number
@@ -31,7 +30,7 @@ class TestHexletCode < Minitest::Test
       f.submit 'Wow'
     end
 
-    expected_form = YAML.load_file('test/fixtures/form.yml')['user']['html_form_with_labels']
+    expected_form = FIXTURES['user']['html_form_with_labels']
 
     assert_equal(expected_form, result)
   end

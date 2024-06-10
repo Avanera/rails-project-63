@@ -4,9 +4,12 @@ module HexletCode
   module Tag
     module Inputs
       class Text
+        COLS_DEFAULT = '20'
+        ROWS_DEFAULT = '40'
+
         def build_tag_params(type, name, args, value)
-          args[:cols] ||= '20'
-          args[:rows] ||= '40'
+          args[:cols] ||= COLS_DEFAULT
+          args[:rows] ||= ROWS_DEFAULT
 
           { type:, name:, args:, value:, label: args.delete(:label) }
         end
