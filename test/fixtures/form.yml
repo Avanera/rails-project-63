@@ -1,5 +1,13 @@
 user:
-  html_form_with_labels: "<form action=\"/users\" class=\"hexlet-form\" method=\"get\">\
+  html_form_with_defaults: "<form action=\"#\" method=\"post\">\
+<label for=\"name\">Name</label>\
+<input name=\"name\" type=\"text\" value=\"rob\">\
+<label for=\"job\">Job</label>\
+<textarea name=\"job\" cols=\"20\" rows=\"40\">hexlet</textarea>\
+<input type=\"submit\" value=\"Save\">\
+</form>"
+
+  html_form_with_custom_params: "<form action=\"/users\" class=\"hexlet-form\" method=\"get\">\
 <label for=\"name\">Name</label>\
 <input name=\"name\" type=\"text\" value=\"rob\" class=\"user-input\">\
 <label for=\"gender\">Gender Identity</label>\

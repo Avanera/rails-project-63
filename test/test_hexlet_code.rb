@@ -18,19 +18,33 @@ class TestHexletCode < Minitest::Test
   end
 
   User = Struct.new(:name, :job, :gender, keyword_init: true)
+  def setup
+    @user = User.new name: 'rob', job: 'hexlet', gender: 'm'
+  end
 
-  def test_it_generates_forms_with_labels
-    user = User.new name: 'rob', job: 'hexlet', gender: 'm'
+  def test_it_generates_a_form_with_defaults
+    result = HexletCode.form_for @user, {} do |f|
+      f.input :name
+      f.input :job, as: :text
+      f.submit
+    end
+
+    expected_form = FIXTURES['user']['html_form_with_defaults']
+
+    assert_equal(expected_form, result)
+  end
+
+  def test_it_generates_a_form_with_custom_params
     args = { url: '/users', method: :get, class: 'hexlet-form' }
 
-    result = HexletCode.form_for user, args do |f|
+    result = HexletCode.form_for @user, args do |f|
       f.input :name, class: 'user-input'
       f.input :gender, as: :text, label: 'Gender Identity'
       f.input :job, as: :text, cols: 50, rows: 50
       f.submit 'Wow'
     end
 
-    expected_form = FIXTURES['user']['html_form_with_labels']
+    expected_form = FIXTURES['user']['html_form_with_custom_params']
 
     assert_equal(expected_form, result)
   end

@@ -63,7 +63,7 @@ module HexletCode
       end
 
       def prepare_form_args(form_args)
-        form_args[:action] = form_args.delete(:url)
+        form_args[:action] = form_args.delete(:url) || '#'
         form_args[:method] ||= 'post'
         form_args.sort.to_h
       end
