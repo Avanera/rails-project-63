@@ -1,11 +1,13 @@
 # frozen_string_literal: true
 
 require 'active_support/inflector'
-require_relative 'inputs/input'
-require_relative 'inputs/text'
 
 module HexletCode
   module Tag
+    module Inputs
+      autoload :Input, 'hexlet_code/tag/inputs/input'
+      autoload :Text, 'hexlet_code/tag/inputs/text'
+    end
     # This class, HexletCode::Tag::Form, is designed for creating a form object in Ruby. The primary
     # method call accepts a block that invokes either the input or submit methods to generate the
     # respective fields. Here’s how you might use it:
@@ -25,10 +27,8 @@ module HexletCode
     #   @form_args={:action=>"/users", :method=>"post"},
     #   @object=#<struct TestHexletCode::User name="rob", job="hexlet", gender="m">
     # >
-    #
-    class Form
-      extend ActiveSupport::Inflector
 
+    class Form
       attr_reader :object, :form_args
       attr_accessor :fields
 
